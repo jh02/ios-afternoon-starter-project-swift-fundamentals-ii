@@ -30,8 +30,9 @@ struct Airport {
 
 struct Flight {
     let number: String
-    let departureTime: Date?
-    let terminal: String?
+    var departureTime: Date?
+    var terminal: String?
+    var status: FlightStatus
 }
 
 class DepartureBoard {
@@ -44,8 +45,7 @@ class DepartureBoard {
     }
 }
 
-//let db = DepartureBoard(currentAirport: <#T##Airport#>)
-//db.departureFlights.append(<#T##newElement: Flight##Flight#>)
+
 //: ## 2. Create 3 flights and add them to a departure board
 //: a. For the departure time, use `Date()` for the current time
 //:
@@ -56,8 +56,17 @@ class DepartureBoard {
 //: d. Make one of the flights have a `nil` terminal because it has not been decided yet.
 //:
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
+let flight1 = Flight(number: "K4256", departureTime: nil, terminal: "4", status: .canceled)
+let flight2 = Flight(number: "b7777", departureTime: Date(), terminal: nil, status: .delayed)
+let flight3 = Flight(number: "G5656", departureTime: Date(), terminal: "7", status: .enRoute)
 
+let airport = Airport(destination: "New York", callName: "JFK")
 
+var board = DepartureBoard(currentAirport: airport)
+
+board.departureFlights.append(flight1)
+board.departureFlights.append(flight2)
+board.departureFlights.append(flight3)
 
 //: ## 3. Create a free-standing function that can print the flight information from the `DepartureBoard`
 //: a. Use the function signature: `printDepartures(departureBoard:)`
@@ -67,8 +76,14 @@ class DepartureBoard {
 //: c. Make your `FlightStatus` enum conform to `String` so you can print the `rawValue` String values from the `enum`. See the [enum documentation](https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html).
 //:
 //: d. Print out the current DepartureBoard you created using the function
+func printDepartures(departureBoard: DepartureBoard) {
+    for flight in departureBoard.departureFlights {
+    
+        print(flight.departureTime, flight.terminal, flight.number, flight.status)
+    }
+}
 
-
+printDepartures(departureBoard: board)
 
 
 //: ## 4. Make a second function to print print an empty string if the `departureTime` is nil
